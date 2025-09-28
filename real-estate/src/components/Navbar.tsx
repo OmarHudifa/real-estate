@@ -16,12 +16,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SidebarTrigger } from "./ui/sidebar";
 
 const Navbar = () => {
-  const {data:authUser}=useGetAuthUserQuery()
+  const { data: authUser } = useGetAuthUserQuery();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -116,11 +115,11 @@ const Navbar = () => {
                   <Avatar>
                     <AvatarImage src={authUser.userInfo?.image} />
                     <AvatarFallback className="bg-primary-600">
-                      {authUser?.userRole?.[0].toUpperCase()}
+                      {authUser.userRole?.[0].toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <p className="text-primary-200 hidden md:block">
-                    {authUser?.userInfo?.name}
+                    {authUser.userInfo?.name}
                   </p>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white text-primary-700">
@@ -128,7 +127,7 @@ const Navbar = () => {
                     className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100 font-bold"
                     onClick={() =>
                       router.push(
-                        authUser?.userRole?.toLowerCase() === "manager"
+                        authUser.userRole?.toLowerCase() === "manager"
                           ? "/managers/properties"
                           : "/tenants/favorites",
                         { scroll: false }
@@ -142,7 +141,7 @@ const Navbar = () => {
                     className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
                     onClick={() =>
                       router.push(
-                        `/${authUser?.userRole?.toLowerCase()}s/settings`,
+                        `/${authUser.userRole?.toLowerCase()}s/settings`,
                         { scroll: false }
                       )
                     }

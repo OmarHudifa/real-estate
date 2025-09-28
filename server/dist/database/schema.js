@@ -18,7 +18,7 @@ const {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tenantProperties = exports.tenantFavorites = exports.payment = exports.lease = exports.application = exports.location = exports.tenant = exports.manager = exports.property = exports.paymentStatusEnum = exports.applicationStatusEnum = exports.propertyTypeEnum = exports.amenityEnum = exports.highlightEnum = void 0;
 const pg_core_1 = require("drizzle-orm/pg-core");
-exports.highlightEnum = (0, pg_core_1.pgEnum)('Highlight', [
+exports.highlightEnum = (0, pg_core_1.pgEnum)('highlight', [
     'HighSpeedInternetAccess',
     'WasherDryer',
     'AirConditioning',
@@ -35,7 +35,7 @@ exports.highlightEnum = (0, pg_core_1.pgEnum)('Highlight', [
     'GreatView',
     'QuietNeighborhood'
 ]);
-exports.amenityEnum = (0, pg_core_1.pgEnum)('Amenity', [
+exports.amenityEnum = (0, pg_core_1.pgEnum)('amenity', [
     'WasherDryer',
     'AirConditioning',
     'Dishwasher',
@@ -50,7 +50,7 @@ exports.amenityEnum = (0, pg_core_1.pgEnum)('Amenity', [
     'PetsAllowed',
     'WiFi'
 ]);
-exports.propertyTypeEnum = (0, pg_core_1.pgEnum)('PropertyType', [
+exports.propertyTypeEnum = (0, pg_core_1.pgEnum)('property_type', [
     'Rooms',
     'Tinyhouse',
     'Apartment',
@@ -58,19 +58,19 @@ exports.propertyTypeEnum = (0, pg_core_1.pgEnum)('PropertyType', [
     'Townhouse',
     'Cottage'
 ]);
-exports.applicationStatusEnum = (0, pg_core_1.pgEnum)('ApplicationStatus', [
+exports.applicationStatusEnum = (0, pg_core_1.pgEnum)('application_status', [
     'Pending',
     'Denied',
     'Approved'
 ]);
-exports.paymentStatusEnum = (0, pg_core_1.pgEnum)('PaymentStatus', [
+exports.paymentStatusEnum = (0, pg_core_1.pgEnum)('payment_status', [
     'Pending',
     'Paid',
     'PartiallyPaid',
     'Overdue'
 ]);
 // Tables
-exports.property = (0, pg_core_1.pgTable)('Property', {
+exports.property = (0, pg_core_1.pgTable)('property', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     name: (0, pg_core_1.varchar)('name', { length: 255 }).notNull(),
     description: (0, pg_core_1.text)('description').notNull(),
@@ -92,21 +92,21 @@ exports.property = (0, pg_core_1.pgTable)('Property', {
     locationId: (0, pg_core_1.integer)('locationId').notNull(),
     managerCognitoId: (0, pg_core_1.varchar)('managerCognitoId', { length: 255 }).notNull()
 });
-exports.manager = (0, pg_core_1.pgTable)('Manager', {
+exports.manager = (0, pg_core_1.pgTable)('manager', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     cognitoId: (0, pg_core_1.varchar)('cognitoId', { length: 255 }).notNull().unique(),
     name: (0, pg_core_1.varchar)('name', { length: 255 }).notNull(),
     email: (0, pg_core_1.varchar)('email', { length: 255 }).notNull(),
     phoneNumber: (0, pg_core_1.varchar)('phoneNumber', { length: 255 }).notNull()
 });
-exports.tenant = (0, pg_core_1.pgTable)('Tenant', {
+exports.tenant = (0, pg_core_1.pgTable)('tenant', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     cognitoId: (0, pg_core_1.varchar)('cognitoId', { length: 255 }).notNull().unique(),
     name: (0, pg_core_1.varchar)('name', { length: 255 }).notNull(),
     email: (0, pg_core_1.varchar)('email', { length: 255 }).notNull(),
     phoneNumber: (0, pg_core_1.varchar)('phoneNumber', { length: 255 }).notNull()
 });
-exports.location = (0, pg_core_1.pgTable)('Location', {
+exports.location = (0, pg_core_1.pgTable)('location', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     address: (0, pg_core_1.varchar)('address', { length: 255 }).notNull(),
     city: (0, pg_core_1.varchar)('city', { length: 100 }).notNull(),
@@ -115,7 +115,7 @@ exports.location = (0, pg_core_1.pgTable)('Location', {
     postalCode: (0, pg_core_1.varchar)('postalCode', { length: 20 }).notNull(),
     coordinates: (0, pg_core_1.text)('coordinates').notNull() // PostGIS support placeholder
 });
-exports.application = (0, pg_core_1.pgTable)('Application', {
+exports.application = (0, pg_core_1.pgTable)('application', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     applicationDate: (0, pg_core_1.timestamp)('applicationDate', { withTimezone: true }).notNull(),
     status: (0, exports.applicationStatusEnum)('status').notNull(),
@@ -127,7 +127,7 @@ exports.application = (0, pg_core_1.pgTable)('Application', {
     message: (0, pg_core_1.text)('message'),
     leaseId: (0, pg_core_1.integer)('leaseId').unique()
 });
-exports.lease = (0, pg_core_1.pgTable)('Lease', {
+exports.lease = (0, pg_core_1.pgTable)('lease', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     startDate: (0, pg_core_1.timestamp)('startDate', { withTimezone: true }).notNull(),
     endDate: (0, pg_core_1.timestamp)('endDate', { withTimezone: true }).notNull(),
@@ -136,7 +136,7 @@ exports.lease = (0, pg_core_1.pgTable)('Lease', {
     propertyId: (0, pg_core_1.integer)('propertyId').notNull(),
     tenantCognitoId: (0, pg_core_1.varchar)('tenantCognitoId', { length: 255 }).notNull()
 });
-exports.payment = (0, pg_core_1.pgTable)('Payment', {
+exports.payment = (0, pg_core_1.pgTable)('payment', {
     id: (0, pg_core_1.serial)('id').primaryKey(),
     amountDue: (0, pg_core_1.real)('amountDue').notNull(),
     amountPaid: (0, pg_core_1.real)('amountPaid').notNull(),
@@ -146,13 +146,13 @@ exports.payment = (0, pg_core_1.pgTable)('Payment', {
     leaseId: (0, pg_core_1.integer)('leaseId').notNull()
 });
 // Junction Tables (many-to-many)
-exports.tenantFavorites = (0, pg_core_1.pgTable)('TenantFavorites', {
+exports.tenantFavorites = (0, pg_core_1.pgTable)('tenant_favorites', {
     tenantId: (0, pg_core_1.integer)('tenantId').notNull(),
     propertyId: (0, pg_core_1.integer)('propertyId').notNull(),
 }, (table) => ({
     pk: (0, pg_core_1.primaryKey)({ columns: [table.tenantId, table.propertyId] })
 }));
-exports.tenantProperties = (0, pg_core_1.pgTable)('TenantProperties', {
+exports.tenantProperties = (0, pg_core_1.pgTable)('tenant_properties', {
     tenantId: (0, pg_core_1.integer)('tenantId').notNull(),
     propertyId: (0, pg_core_1.integer)('propertyId').notNull(),
 }, (table) => ({

@@ -1,11 +1,11 @@
 {
-  "id": "b2b58f5e-5ab2-4d49-9910-5a54e3f694a4",
+  "id": "5ca94da6-372a-4ecb-a2e5-fd968f735f46",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.Application": {
-      "name": "Application",
+    "public.application": {
+      "name": "application",
       "schema": "",
       "columns": {
         "id": {
@@ -22,7 +22,7 @@
         },
         "status": {
           "name": "status",
-          "type": "ApplicationStatus",
+          "type": "application_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -74,8 +74,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "Application_leaseId_unique": {
-          "name": "Application_leaseId_unique",
+        "application_leaseId_unique": {
+          "name": "application_leaseId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "leaseId"
@@ -86,8 +86,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Lease": {
-      "name": "Lease",
+    "public.lease": {
+      "name": "lease",
       "schema": "",
       "columns": {
         "id": {
@@ -141,8 +141,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Location": {
-      "name": "Location",
+    "public.location": {
+      "name": "location",
       "schema": "",
       "columns": {
         "id": {
@@ -196,8 +196,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Manager": {
-      "name": "Manager",
+    "public.manager": {
+      "name": "manager",
       "schema": "",
       "columns": {
         "id": {
@@ -235,8 +235,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "Manager_cognitoId_unique": {
-          "name": "Manager_cognitoId_unique",
+        "manager_cognitoId_unique": {
+          "name": "manager_cognitoId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "cognitoId"
@@ -247,8 +247,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Payment": {
-      "name": "Payment",
+    "public.payment": {
+      "name": "payment",
       "schema": "",
       "columns": {
         "id": {
@@ -283,7 +283,7 @@
         },
         "paymentStatus": {
           "name": "paymentStatus",
-          "type": "PaymentStatus",
+          "type": "payment_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -303,8 +303,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Property": {
-      "name": "Property",
+    "public.property": {
+      "name": "property",
       "schema": "",
       "columns": {
         "id": {
@@ -351,14 +351,14 @@
         },
         "amenities": {
           "name": "amenities",
-          "type": "Amenity[]",
+          "type": "amenity[]",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
         "highlights": {
           "name": "highlights",
-          "type": "Highlight[]",
+          "type": "highlight[]",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -397,7 +397,7 @@
         },
         "propertyType": {
           "name": "propertyType",
-          "type": "PropertyType",
+          "type": "property_type",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -444,8 +444,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Tenant": {
-      "name": "Tenant",
+    "public.tenant": {
+      "name": "tenant",
       "schema": "",
       "columns": {
         "id": {
@@ -483,8 +483,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "Tenant_cognitoId_unique": {
-          "name": "Tenant_cognitoId_unique",
+        "tenant_cognitoId_unique": {
+          "name": "tenant_cognitoId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "cognitoId"
@@ -495,8 +495,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.TenantFavorites": {
-      "name": "TenantFavorites",
+    "public.tenant_favorites": {
+      "name": "tenant_favorites",
       "schema": "",
       "columns": {
         "tenantId": {
@@ -515,8 +515,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "TenantFavorites_tenantId_propertyId_pk": {
-          "name": "TenantFavorites_tenantId_propertyId_pk",
+        "tenant_favorites_tenantId_propertyId_pk": {
+          "name": "tenant_favorites_tenantId_propertyId_pk",
           "columns": [
             "tenantId",
             "propertyId"
@@ -528,8 +528,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.TenantProperties": {
-      "name": "TenantProperties",
+    "public.tenant_properties": {
+      "name": "tenant_properties",
       "schema": "",
       "columns": {
         "tenantId": {
@@ -548,8 +548,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "TenantProperties_tenantId_propertyId_pk": {
-          "name": "TenantProperties_tenantId_propertyId_pk",
+        "tenant_properties_tenantId_propertyId_pk": {
+          "name": "tenant_properties_tenantId_propertyId_pk",
           "columns": [
             "tenantId",
             "propertyId"
@@ -563,8 +563,8 @@
     }
   },
   "enums": {
-    "public.Amenity": {
-      "name": "Amenity",
+    "public.amenity": {
+      "name": "amenity",
       "schema": "public",
       "values": [
         "WasherDryer",
@@ -582,8 +582,8 @@
         "WiFi"
       ]
     },
-    "public.ApplicationStatus": {
-      "name": "ApplicationStatus",
+    "public.application_status": {
+      "name": "application_status",
       "schema": "public",
       "values": [
         "Pending",
@@ -591,8 +591,8 @@
         "Approved"
       ]
     },
-    "public.Highlight": {
-      "name": "Highlight",
+    "public.highlight": {
+      "name": "highlight",
       "schema": "public",
       "values": [
         "HighSpeedInternetAccess",
@@ -612,8 +612,8 @@
         "QuietNeighborhood"
       ]
     },
-    "public.PaymentStatus": {
-      "name": "PaymentStatus",
+    "public.payment_status": {
+      "name": "payment_status",
       "schema": "public",
       "values": [
         "Pending",
@@ -622,8 +622,8 @@
         "Overdue"
       ]
     },
-    "public.PropertyType": {
-      "name": "PropertyType",
+    "public.property_type": {
+      "name": "property_type",
       "schema": "public",
       "values": [
         "Rooms",

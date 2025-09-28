@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const authMiddleware = (allowedRules) => {
+const authMiddleware = (allowedRoles) => {
     return (req, res, next) => {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token) {
@@ -13,21 +13,21 @@ const authMiddleware = (allowedRules) => {
             return;
         }
         try {
-            const decode = jsonwebtoken_1.default.decode(token);
-            const userRole = decode["custom:role"] || "";
+            const decoded = jsonwebtoken_1.default.decode(token);
+            const userRole = decoded["custom:role"] || "";
             req.user = {
-                id: decode.sub,
-                role: userRole
+                id: decoded.sub,
+                role: userRole,
             };
-            const hasAccess = allowedRules.includes(userRole.toLocaleLowerCase());
+            const hasAccess = allowedRoles.includes(userRole.toLowerCase());
             if (!hasAccess) {
-                res.status(403).json({ message: "Access denied" });
+                res.status(403).json({ message: "Access Denied" });
                 return;
             }
         }
-        catch (error) {
-            console.error("Failed to decode token:", error);
-            res.status(400).json({ message: "Invalid Token" });
+        catch (err) {
+            console.error("Failed to decode token:", err);
+            res.status(400).json({ message: "Invalid token" });
             return;
         }
         next();

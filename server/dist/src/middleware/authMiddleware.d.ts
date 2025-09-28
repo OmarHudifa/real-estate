@@ -9,5 +9,5 @@ declare global {
         }
     }
 }
-export declare const authMiddleware: (allowedRules: string[]) => (req: Request, res: Response, next: NextFunction) => void;
+export declare const authMiddleware: (allowedRoles: string[]) => (req: Request, res: Response, next: NextFunction) => void;
 //# sourceMappingURL=authMiddleware.d.ts.map

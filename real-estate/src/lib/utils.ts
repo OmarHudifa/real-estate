@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { toast } from "sonner";
@@ -56,6 +57,35 @@ export const withToast = async <T>(
   }
 };
 
+
+export const createNewUserInDatabase = async (
+  user: any,
+  idToken: any,
+  userRole: string,
+  fetchWithBQ: any
+) => {
+  const createEndpoint =
+    userRole?.toLowerCase() === "manager" ? "/managers" : "/tenants";
+
+  const createUserResponse = await fetchWithBQ({
+    url: createEndpoint,
+    method: "POST",
+    body: {
+      cognitoId: user.userId,
+      name: user.username,
+      email: idToken?.payload?.email || "",
+      phoneNumber: "",
+    },
+  });
+
+  if (createUserResponse.error) {
+    throw new Error("Failed to create user record");
+  }
+
+  // ✅ Make sure we return data only
+  return { data: createUserResponse.data };
+};
+/*
 export const createNewUserInDatabase = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any,
@@ -86,3 +116,4 @@ export const createNewUserInDatabase = async (
 
   return createUserResponse;
 };
+*/

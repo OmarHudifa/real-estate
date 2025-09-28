@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createManager = exports.getManager = void 0;
-const drizzle_orm_1 = require("drizzle-orm");
-const dizzle_1 = require("../../database/dizzle"); // your drizzle db instance
-const schema_1 = require("../../database/schema"); // your schema definitions
+exports.getManagerProperties = exports.updateManager = exports.createManager = exports.getManager = void 0;
+const client_1 = require("@prisma/client");
+const wkt_1 = require("@terraformer/wkt");
+const prisma = new client_1.PrismaClient();
 const getManager = async (req, res) => {
     try {
         const { cognitoId } = req.params;
@@ -11,41 +11,104 @@ const getManager = async (req, res) => {
             res.status(400).json({ message: "Missing cognitoId param" });
             return;
         }
-        // Fetch tenant with favorites (Drizzle style)
-        const newManager = await dizzle_1.db.query.manager.findFirst({
-            where: (0, drizzle_orm_1.eq)(schema_1.manager.cognitoId, cognitoId),
-            with: {
-                tenantFavorites: true,
-            },
+        const manager = await prisma.manager.findUnique({
+            where: { cognitoId },
         });
-        if (newManager) {
-            res.json(newManager);
+        if (manager) {
+            res.json(manager);
         }
         else {
             res.status(404).json({ message: "Manager not found" });
         }
-        console.log("manager: ", newManager, res.status);
     }
     catch (error) {
-        res.status(500).json({ message: `Error retrieving manager: ${error.message}` });
+        res
+            .status(500)
+            .json({ message: `Error retrieving manager: ${error.message}` });
     }
 };
 exports.getManager = getManager;
 const createManager = async (req, res) => {
     try {
         const { cognitoId, name, email, phoneNumber } = req.body;
-        const newManager = await await dizzle_1.db.insert(schema_1.manager).values({
-            cognitoId,
-            name,
-            email,
-            phoneNumber
+        const manager = await prisma.manager.create({
+            data: {
+                cognitoId,
+                name,
+                email,
+                phoneNumber,
+            },
         });
-        res.status(201).json(newManager);
-        console.log(newManager, res.status);
+        res.status(201).json(manager);
     }
     catch (error) {
-        res.status(500).json({ message: `Error creating Manager: ${error.message}` });
+        res
+            .status(500)
+            .json({ message: `Error creating manager: ${error.message}` });
     }
 };
 exports.createManager = createManager;
+const updateManager = async (req, res) => {
+    try {
+        const { cognitoId } = req.params;
+        const { name, email, phoneNumber } = req.body;
+        if (!cognitoId) {
+            res.status(400).json({ message: "Missing cognitoId param" });
+            return;
+        }
+        const updateManager = await prisma.manager.update({
+            where: { cognitoId },
+            data: {
+                name,
+                email,
+                phoneNumber,
+            },
+        });
+        res.json(updateManager);
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error updating manager: ${error.message}` });
+    }
+};
+exports.updateManager = updateManager;
+const getManagerProperties = async (req, res) => {
+    try {
+        const { cognitoId } = req.params;
+        if (!cognitoId) {
+            res.status(400).json({ message: "Missing cognitoId param" });
+            return;
+        }
+        const properties = await prisma.property.findMany({
+            where: { managerCognitoId: cognitoId },
+            include: {
+                location: true,
+            },
+        });
+        const propertiesWithFormattedLocation = await Promise.all(properties.map(async (property) => {
+            const coordinates = await prisma.$queryRaw `SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${property.location.id}`;
+            const geoJSON = (0, wkt_1.wktToGeoJSON)(coordinates[0]?.coordinates || "");
+            const longitude = geoJSON.coordinates[0];
+            const latitude = geoJSON.coordinates[1];
+            return {
+                ...property,
+                location: {
+                    ...property.location,
+                    coordinates: {
+                        longitude,
+                        latitude,
+                    },
+                },
+            };
+        }));
+        res.json(propertiesWithFormattedLocation);
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json({ message: `Error retrieving manager properties: ${err.message}` });
+    }
+};
+exports.getManagerProperties = getManagerProperties;
 //# sourceMappingURL=managerControllers.js.map
