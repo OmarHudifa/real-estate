@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTenant = exports.createTenant = exports.getTenant = void 0;
+exports.removeFavoriteProperty = exports.addFavoriteProperty = exports.getCurrentResidences = exports.updateTenant = exports.createTenant = exports.getTenant = void 0;
 const client_1 = require("@prisma/client");
+const wkt_1 = require("@terraformer/wkt");
 const prisma = new client_1.PrismaClient();
 const getTenant = async (req, res) => {
     try {
@@ -75,4 +76,106 @@ const updateTenant = async (req, res) => {
     }
 };
 exports.updateTenant = updateTenant;
+const getCurrentResidences = async (req, res) => {
+    try {
+        const { cognitoId } = req.params;
+        if (!cognitoId) {
+            res.status(400).json({ message: "Missing cognitoId in request params" });
+            return;
+        }
+        const properties = await prisma.property.findMany({
+            where: { tenants: { some: { cognitoId } } },
+            include: {
+                location: true,
+            },
+        });
+        const residencesWithFormattedLocation = await Promise.all(properties.map(async (property) => {
+            const coordinates = await prisma.$queryRaw `SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${property.location.id}`;
+            const geoJSON = (0, wkt_1.wktToGeoJSON)(coordinates[0]?.coordinates || "");
+            const longitude = geoJSON.coordinates[0];
+            const latitude = geoJSON.coordinates[1];
+            return {
+                ...property,
+                location: {
+                    ...property.location,
+                    coordinates: {
+                        longitude,
+                        latitude,
+                    },
+                },
+            };
+        }));
+        res.json(residencesWithFormattedLocation);
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json({ message: `Error retrieving manager properties: ${err.message}` });
+    }
+};
+exports.getCurrentResidences = getCurrentResidences;
+const addFavoriteProperty = async (req, res) => {
+    try {
+        const { cognitoId, propertyId } = req.params;
+        if (!cognitoId) {
+            res.status(400).json({ message: "Missing cognitoId in request params" });
+            return;
+        }
+        const tenant = await prisma.tenant.findUnique({
+            where: { cognitoId },
+            include: { favorites: true }
+        });
+        const propertyIdNumber = Number(propertyId);
+        const existingFavorites = tenant?.favorites || [];
+        if (existingFavorites.some((fav) => fav.id === propertyIdNumber)) {
+            const updatedTenant = await prisma.tenant.update({
+                where: { cognitoId },
+                data: {
+                    favorites: {
+                        connect: { id: propertyIdNumber }
+                    }
+                }, include: {
+                    favorites: true
+                }
+            });
+            res.json(exports.updateTenant);
+        }
+        else {
+            res.status(409).json({ message: "Property already added as favorites!" });
+        }
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json({ message: `Error adding favorite property: ${err.message}` });
+    }
+};
+exports.addFavoriteProperty = addFavoriteProperty;
+const removeFavoriteProperty = async (req, res) => {
+    try {
+        const { cognitoId, propertyId } = req.params;
+        if (!cognitoId) {
+            res.status(400).json({ message: "Missing cognitoId in request params" });
+            return;
+        }
+        const propertyIdNumber = Number(propertyId);
+        const updatedTenant = await prisma.tenant.update({
+            where: { cognitoId },
+            data: {
+                favorites: {
+                    disconnect: { id: propertyIdNumber }
+                }
+            }, include: {
+                favorites: true
+            }
+        });
+        res.json(exports.updateTenant);
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json({ message: `Error removing favorite property: ${err.message}` });
+    }
+};
+exports.removeFavoriteProperty = removeFavoriteProperty;
 //# sourceMappingURL=tenantControllers.js.map
