@@ -32,6 +32,7 @@ const Navbar = () => {
     window.location.href = "/";
   };
 
+  console.log("dashboard? :",isDashboardPage)
   return (
     <div
       className="fixed top-0 left-0 w-full z-50 shadow-xl"
