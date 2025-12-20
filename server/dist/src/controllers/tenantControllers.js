@@ -7,10 +7,6 @@ const prisma = new client_1.PrismaClient();
 const getTenant = async (req, res) => {
     try {
         const { cognitoId } = req.params;
-        if (!cognitoId) {
-            res.status(400).json({ message: "Missing cognitoId param" });
-            return;
-        }
         const tenant = await prisma.tenant.findUnique({
             where: { cognitoId },
             include: {
@@ -55,10 +51,6 @@ const updateTenant = async (req, res) => {
     try {
         const { cognitoId } = req.params;
         const { name, email, phoneNumber } = req.body;
-        if (!cognitoId) {
-            res.status(400).json({ message: "Missing cognitoId param" });
-            return;
-        }
         const updateTenant = await prisma.tenant.update({
             where: { cognitoId },
             data: {
@@ -117,59 +109,53 @@ exports.getCurrentResidences = getCurrentResidences;
 const addFavoriteProperty = async (req, res) => {
     try {
         const { cognitoId, propertyId } = req.params;
-        if (!cognitoId) {
-            res.status(400).json({ message: "Missing cognitoId in request params" });
-            return;
-        }
         const tenant = await prisma.tenant.findUnique({
             where: { cognitoId },
-            include: { favorites: true }
+            include: { favorites: true },
         });
+        if (!tenant) {
+            res.status(404).json({ message: "Tenant not found" });
+            return;
+        }
         const propertyIdNumber = Number(propertyId);
-        const existingFavorites = tenant?.favorites || [];
-        if (existingFavorites.some((fav) => fav.id === propertyIdNumber)) {
+        const existingFavorites = tenant.favorites || [];
+        if (!existingFavorites.some((fav) => fav.id === propertyIdNumber)) {
             const updatedTenant = await prisma.tenant.update({
                 where: { cognitoId },
                 data: {
                     favorites: {
-                        connect: { id: propertyIdNumber }
-                    }
-                }, include: {
-                    favorites: true
-                }
+                        connect: { id: propertyIdNumber },
+                    },
+                },
+                include: { favorites: true },
             });
-            res.json(exports.updateTenant);
+            res.json(updatedTenant);
         }
         else {
-            res.status(409).json({ message: "Property already added as favorites!" });
+            res.status(409).json({ message: "Property already added as favorite" });
         }
     }
-    catch (err) {
+    catch (error) {
         res
             .status(500)
-            .json({ message: `Error adding favorite property: ${err.message}` });
+            .json({ message: `Error adding favorite property: ${error.message}` });
     }
 };
 exports.addFavoriteProperty = addFavoriteProperty;
 const removeFavoriteProperty = async (req, res) => {
     try {
         const { cognitoId, propertyId } = req.params;
-        if (!cognitoId) {
-            res.status(400).json({ message: "Missing cognitoId in request params" });
-            return;
-        }
         const propertyIdNumber = Number(propertyId);
         const updatedTenant = await prisma.tenant.update({
             where: { cognitoId },
             data: {
                 favorites: {
-                    disconnect: { id: propertyIdNumber }
-                }
-            }, include: {
-                favorites: true
-            }
+                    disconnect: { id: propertyIdNumber },
+                },
+            },
+            include: { favorites: true },
         });
-        res.json(exports.updateTenant);
+        res.json(updatedTenant);
     }
     catch (err) {
         res

@@ -112,7 +112,7 @@ export const PropertyTypeIcons: Record<PropertyTypeEnum, LucideIcon> = {
 
 // Add this constant at the end of the file
 export const NAVBAR_HEIGHT = 48; // in pixels
-export const SIDEBAR_WIDTH=200;
+export const SIDEBAR_WIDTH=220;
 
 // Test users for development
 export const testUsers = {

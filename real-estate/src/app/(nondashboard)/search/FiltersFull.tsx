@@ -19,39 +19,73 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-
-
 const FiltersFull = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
+  const filters = useAppSelector((state) => state.global.filters);
+  const [localFilters, setLocalFilters] = useState(initialState.filters);
+  const isFiltersFullOpen = useAppSelector(
+    (state) => state.global.isFiltersFullOpen
+  );
 
-   const dispatch=useDispatch()
-   const router=useRouter()
-   const pathName=usePathname()
-   const filters=useAppSelector((state)=>state.global.filters)
-   const isFiltersFullOpen=useAppSelector((state)=>state.global.isFiltersFullOpen)
-   const [localFilters,setLocalFilters]=useState(initialState.filters)
+  const updateURL = debounce((newFilters: FiltersState) => {
+    const cleanFilters = cleanParams(newFilters);
+    const updatedSearchParams = new URLSearchParams();
 
-    const updateUrl=debounce((newFilters:FiltersState)=>{
-         const cleanFilters=cleanParams(newFilters)
-         const updatedSearchParams=new URLSearchParams()
-   
-         Object.entries(cleanFilters).forEach(([key,value])=>{
-           updatedSearchParams.set(key,Array.isArray(value)?value.join(","):value.toString())
-         })
-         router.push(`${pathName}?${updatedSearchParams.toString()}`)
-       })
+    Object.entries(cleanFilters).forEach(([key, value]) => {
+      updatedSearchParams.set(
+        key,
+        Array.isArray(value) ? value.join(",") : value.toString()
+      );
+    });
 
-       const handleSubmit=()=>{
-        dispatch(setFilters(localFilters))
-        updateUrl(localFilters)
-       }
+    router.push(`${pathname}?${updatedSearchParams.toString()}`);
+  });
 
-       const handleReset=()=>{
-        setLocalFilters(initialState.filters)
-        dispatch(setFilters(initialState.filters))
-        updateUrl(initialState.filters)
-       }
+  const handleSubmit = () => {
+    dispatch(setFilters(localFilters));
+    updateURL(localFilters);
+  };
 
-       if(!isFiltersFullOpen) return null
+  const handleReset = () => {
+    setLocalFilters(initialState.filters);
+    dispatch(setFilters(initialState.filters));
+    updateURL(initialState.filters);
+  };
+
+  const handleAmenityChange = (amenity: AmenityEnum) => {
+    setLocalFilters((prev) => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter((a) => a !== amenity)
+        : [...prev.amenities, amenity],
+    }));
+  };
+
+  const handleLocationSearch = async () => {
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          localFilters.location
+        )}.json?access_token=${
+          process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+        }&fuzzyMatch=true`
+      );
+      const data = await response.json();
+      if (data.features && data.features.length > 0) {
+        const [lng, lat] = data.features[0].center;
+        setLocalFilters((prev) => ({
+          ...prev,
+          coordinates: [lng, lat],
+        }));
+      }
+    } catch (err) {
+      console.error("Error search location:", err);
+    }
+  };
+
+  if (!isFiltersFullOpen) return null;
 
   return (
     <div className="bg-white rounded-lg px-4 h-full overflow-auto pb-10">
@@ -72,7 +106,7 @@ const FiltersFull = () => {
               className="rounded-l-xl rounded-r-none border-r-0"
             />
             <Button
-              //onClick={handleLocationSearch}
+              onClick={handleLocationSearch}
               className="rounded-r-xl rounded-l-none border-l-none border-black shadow-none border hover:bg-primary-700 hover:text-primary-50"
             >
               <Search className="w-4 h-4" />
@@ -213,7 +247,7 @@ const FiltersFull = () => {
                     ? "border-black"
                     : "border-gray-200"
                 )}
-                //onClick={() => handleAmenityChange(amenity as AmenityEnum)}
+                onClick={() => handleAmenityChange(amenity as AmenityEnum)}
               >
                 <Icon className="w-5 h-5 hover:cursor-pointer" />
                 <Label className="hover:cursor-pointer">
@@ -262,7 +296,7 @@ const FiltersFull = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FiltersFull
+export default FiltersFull;
