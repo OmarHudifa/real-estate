@@ -7,15 +7,13 @@ import { NAVBAR_HEIGHT } from "@/lib/constants";
 import React, { useEffect, useState } from "react";
 import { useGetAuthUserQuery } from "@/state/api";
 import { usePathname, useRouter } from "next/navigation";
-import { useAuthenticator } from "@aws-amplify/ui-react";
+import Loading from "@/components/Loading";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: authUser, isLoading: authLoading } = useGetAuthUserQuery();
-   const router = useRouter();
-   const pathname = usePathname();
-   const [isLoading, setIsLoading] = useState(false)
-
-
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (authUser) {
@@ -36,11 +34,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [authUser, router, pathname]);
 
-  if (authLoading || isLoading) return <>Loading...</>;
+  if (authLoading || isLoading) return <><Loading/></>
   if (!authUser?.userRole) return null;
-   
-
-  
 
   return (
     <SidebarProvider>

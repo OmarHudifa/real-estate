@@ -1,56 +1,4 @@
 import { Request, Response } from "express";
-import { eq } from "drizzle-orm";
-import { db } from "../../database/drizzle"; // your drizzle db instance
-import { tenant,tenantFavorites } from "../../database/schema"; // your schema definitions
-
-export const getTenant = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { cognitoId } = req.params;
-
-     if (!cognitoId) {
-      res.status(400).json({ message: "Missing cognitoId param" });
-      return;
-    }
-
-    // Fetch tenant with favorites (Drizzle style)
-    const [newTenant] = await db
-  .select()
-  .from(tenant)
-  .leftJoin(tenantFavorites, eq(tenant.id, tenantFavorites.tenantId)) // adjust join if necessary
-  .where(eq(tenant.cognitoId, cognitoId))
-  .limit(1);
-
-
-    if (newTenant) {
-      res.json(newTenant);
-    } else {
-      res.status(404).json({ message: "Tenant not found" });
-    }
-  } catch (error: any) {
-    res.status(500).json({ message: `Error retrieving tenant: ${error.message}` });
-  }
-};
-
-
-export const createTenant = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { cognitoId,name,email,phoneNumber } = req.body;
-
-    const newTenant = await await db.insert(tenant).values({
-      cognitoId,
-      name,
-      email,
-      phoneNumber
-      });
-      res.status(201).json(newTenant);
-    
-  } catch (error: any) {
-    res.status(500).json({ message: `Error creating tenant: ${error.message}` });
-  }
-};
-
-/*
-import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { wktToGeoJSON } from "@terraformer/wkt";
 
@@ -133,6 +81,11 @@ export const getCurrentResidences = async (
 ): Promise<void> => {
   try {
     const { cognitoId } = req.params;
+      if (!cognitoId) {
+  res.status(400).json({ message: "cognitoId is required" });
+  return;
+}
+    
     const properties = await prisma.property.findMany({
       where: { tenants: { some: { cognitoId } } },
       include: {
@@ -233,5 +186,57 @@ export const removeFavoriteProperty = async (
     res
       .status(500)
       .json({ message: `Error removing favorite property: ${err.message}` });
+  }
+};
+
+/*
+import { Request, Response } from "express";
+import { eq } from "drizzle-orm";
+import { db } from "../../database/drizzle"; // your drizzle db instance
+import { tenant,tenantFavorites } from "../../database/schema"; // your schema definitions
+
+export const getTenant = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { cognitoId } = req.params;
+
+     if (!cognitoId) {
+      res.status(400).json({ message: "Missing cognitoId param" });
+      return;
+    }
+
+    // Fetch tenant with favorites (Drizzle style)
+    const [newTenant] = await db
+  .select()
+  .from(tenant)
+  .leftJoin(tenantFavorites, eq(tenant.id, tenantFavorites.tenantId)) // adjust join if necessary
+  .where(eq(tenant.cognitoId, cognitoId))
+  .limit(1);
+
+
+    if (newTenant) {
+      res.json(newTenant);
+    } else {
+      res.status(404).json({ message: "Tenant not found" });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: `Error retrieving tenant: ${error.message}` });
+  }
+};
+
+
+export const createTenant = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { cognitoId,name,email,phoneNumber } = req.body;
+
+    const newTenant = await await db.insert(tenant).values({
+      cognitoId,
+      name,
+      email,
+      phoneNumber
+      });
+      res.status(201).json(newTenant);
+    
+  } catch (error: any) {
+    res.status(500).json({ message: `Error creating tenant: ${error.message}` });
   }
 };*/

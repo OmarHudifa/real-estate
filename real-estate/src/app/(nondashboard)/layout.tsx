@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import Navbar from "@/components/Navbar";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { useGetAuthUserQuery } from "@/state/api";
@@ -32,7 +33,7 @@ useEffect(() => {
   }
 }, [authUser, router, pathname]);
 
-  if (authLoading || isLoading) return <>Loading....</>;
+  if (authLoading || isLoading) return <Loading/>;
 
 
   
