@@ -1,2 +1,4 @@
 ﻿# real-estate
-[Home Page](./public/screenshots/Screenshot 2026-04-09 132846.png)
+[Home Page](./public/screenshots/homepage-preview.png)
+[Search Page](./public/screenshots/searchpage-preview.png)
+[Property Page](./public/screenshots/propertypage-preview.png)
