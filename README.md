@@ -1,3 +1,5 @@
-![Home Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/homepage-preview.png?raw=true)
-![Property Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/property-preview.png?raw=true)
-![Search Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/searchpage-preview.png?raw=true)
+![Search Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/Screenshot%202026-04-09%20132609.png?raw=true)
+![Property Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/Screenshot%202026-04-09%20132631.png?raw=true)
+![Screenshot 3](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/Screenshot%202026-04-09%20132715.png?raw=true)
+![Home Page](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/Screenshot%202026-04-09%20132846.png?raw=true)
+![Screenshot 5](https://github.com/OmarHudifa/real-estate/blob/main/real-estate/public/screenshots/Screenshot%202026-04-09%20132904.png?raw=true)
