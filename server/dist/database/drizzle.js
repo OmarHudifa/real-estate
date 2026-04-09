@@ -42,4 +42,4 @@ const pool = new pg_1.Pool({
     connectionString: process.env.DATABASE_URL,
 });
 exports.db = (0, node_postgres_1.drizzle)(pool, { schema });
-//# sourceMappingURL=dizzle.js.map
+//# sourceMappingURL=drizzle.js.map

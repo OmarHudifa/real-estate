@@ -4,12 +4,12 @@ export declare const propertyTypeEnum: import("drizzle-orm/pg-core").PgEnum<["Ro
 export declare const applicationStatusEnum: import("drizzle-orm/pg-core").PgEnum<["Pending", "Denied", "Approved"]>;
 export declare const paymentStatusEnum: import("drizzle-orm/pg-core").PgEnum<["Pending", "Paid", "PartiallyPaid", "Overdue"]>;
 export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Property";
+    name: "property";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -26,7 +26,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         name: import("drizzle-orm/pg-core").PgColumn<{
             name: "name";
-            tableName: "Property";
+            tableName: "property";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -45,7 +45,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         description: import("drizzle-orm/pg-core").PgColumn<{
             name: "description";
-            tableName: "Property";
+            tableName: "property";
             dataType: "string";
             columnType: "PgText";
             data: string;
@@ -62,7 +62,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         pricePerMonth: import("drizzle-orm/pg-core").PgColumn<{
             name: "pricePerMonth";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -79,7 +79,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         securityDeposit: import("drizzle-orm/pg-core").PgColumn<{
             name: "securityDeposit";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -96,7 +96,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         applicationFee: import("drizzle-orm/pg-core").PgColumn<{
             name: "applicationFee";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -113,7 +113,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         photoUrls: import("drizzle-orm/pg-core").PgColumn<{
             name: "photoUrls";
-            tableName: "Property";
+            tableName: "property";
             dataType: "array";
             columnType: "PgArray";
             data: string[];
@@ -126,7 +126,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
             enumValues: [string, ...string[]];
             baseColumn: import("drizzle-orm").Column<{
                 name: "photoUrls";
-                tableName: "Property";
+                tableName: "property";
                 dataType: "string";
                 columnType: "PgVarchar";
                 data: string;
@@ -161,7 +161,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         amenities: import("drizzle-orm/pg-core").PgColumn<{
             name: "amenities";
-            tableName: "Property";
+            tableName: "property";
             dataType: "array";
             columnType: "PgArray";
             data: ("WasherDryer" | "AirConditioning" | "Dishwasher" | "HighSpeedInternet" | "HardwoodFloors" | "WalkInClosets" | "Microwave" | "Refrigerator" | "Pool" | "Gym" | "Parking" | "PetsAllowed" | "WiFi")[];
@@ -174,7 +174,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
             enumValues: ["WasherDryer", "AirConditioning", "Dishwasher", "HighSpeedInternet", "HardwoodFloors", "WalkInClosets", "Microwave", "Refrigerator", "Pool", "Gym", "Parking", "PetsAllowed", "WiFi"];
             baseColumn: import("drizzle-orm").Column<{
                 name: "";
-                tableName: "Property";
+                tableName: "property";
                 dataType: "string";
                 columnType: "PgEnumColumn";
                 data: "WasherDryer" | "AirConditioning" | "Dishwasher" | "HighSpeedInternet" | "HardwoodFloors" | "WalkInClosets" | "Microwave" | "Refrigerator" | "Pool" | "Gym" | "Parking" | "PetsAllowed" | "WiFi";
@@ -204,7 +204,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         highlights: import("drizzle-orm/pg-core").PgColumn<{
             name: "highlights";
-            tableName: "Property";
+            tableName: "property";
             dataType: "array";
             columnType: "PgArray";
             data: ("HighSpeedInternetAccess" | "WasherDryer" | "AirConditioning" | "Heating" | "SmokeFree" | "CableReady" | "SatelliteTV" | "DoubleVanities" | "TubShower" | "Intercom" | "SprinklerSystem" | "RecentlyRenovated" | "CloseToTransit" | "GreatView" | "QuietNeighborhood")[];
@@ -217,7 +217,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
             enumValues: ["HighSpeedInternetAccess", "WasherDryer", "AirConditioning", "Heating", "SmokeFree", "CableReady", "SatelliteTV", "DoubleVanities", "TubShower", "Intercom", "SprinklerSystem", "RecentlyRenovated", "CloseToTransit", "GreatView", "QuietNeighborhood"];
             baseColumn: import("drizzle-orm").Column<{
                 name: "";
-                tableName: "Property";
+                tableName: "property";
                 dataType: "string";
                 columnType: "PgEnumColumn";
                 data: "HighSpeedInternetAccess" | "WasherDryer" | "AirConditioning" | "Heating" | "SmokeFree" | "CableReady" | "SatelliteTV" | "DoubleVanities" | "TubShower" | "Intercom" | "SprinklerSystem" | "RecentlyRenovated" | "CloseToTransit" | "GreatView" | "QuietNeighborhood";
@@ -247,7 +247,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         isPetsAllowed: import("drizzle-orm/pg-core").PgColumn<{
             name: "isPetsAllowed";
-            tableName: "Property";
+            tableName: "property";
             dataType: "boolean";
             columnType: "PgBoolean";
             data: boolean;
@@ -264,7 +264,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         isParkingIncluded: import("drizzle-orm/pg-core").PgColumn<{
             name: "isParkingIncluded";
-            tableName: "Property";
+            tableName: "property";
             dataType: "boolean";
             columnType: "PgBoolean";
             data: boolean;
@@ -281,7 +281,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         beds: import("drizzle-orm/pg-core").PgColumn<{
             name: "beds";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -298,7 +298,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         baths: import("drizzle-orm/pg-core").PgColumn<{
             name: "baths";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -315,7 +315,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         squareFeet: import("drizzle-orm/pg-core").PgColumn<{
             name: "squareFeet";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -332,7 +332,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         propertyType: import("drizzle-orm/pg-core").PgColumn<{
             name: "propertyType";
-            tableName: "Property";
+            tableName: "property";
             dataType: "string";
             columnType: "PgEnumColumn";
             data: "Rooms" | "Tinyhouse" | "Apartment" | "Villa" | "Townhouse" | "Cottage";
@@ -349,7 +349,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         postedDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "postedDate";
-            tableName: "Property";
+            tableName: "property";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -366,7 +366,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         averageRating: import("drizzle-orm/pg-core").PgColumn<{
             name: "averageRating";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -383,7 +383,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         numberOfReviews: import("drizzle-orm/pg-core").PgColumn<{
             name: "numberOfReviews";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -400,7 +400,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         locationId: import("drizzle-orm/pg-core").PgColumn<{
             name: "locationId";
-            tableName: "Property";
+            tableName: "property";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -417,7 +417,7 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         managerCognitoId: import("drizzle-orm/pg-core").PgColumn<{
             name: "managerCognitoId";
-            tableName: "Property";
+            tableName: "property";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -438,12 +438,12 @@ export declare const property: import("drizzle-orm/pg-core").PgTableWithColumns<
     dialect: "pg";
 }>;
 export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Manager";
+    name: "manager";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Manager";
+            tableName: "manager";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -460,7 +460,7 @@ export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         cognitoId: import("drizzle-orm/pg-core").PgColumn<{
             name: "cognitoId";
-            tableName: "Manager";
+            tableName: "manager";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -479,7 +479,7 @@ export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         name: import("drizzle-orm/pg-core").PgColumn<{
             name: "name";
-            tableName: "Manager";
+            tableName: "manager";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -498,7 +498,7 @@ export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         email: import("drizzle-orm/pg-core").PgColumn<{
             name: "email";
-            tableName: "Manager";
+            tableName: "manager";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -517,7 +517,7 @@ export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         phoneNumber: import("drizzle-orm/pg-core").PgColumn<{
             name: "phoneNumber";
-            tableName: "Manager";
+            tableName: "manager";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -538,12 +538,12 @@ export declare const manager: import("drizzle-orm/pg-core").PgTableWithColumns<{
     dialect: "pg";
 }>;
 export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Tenant";
+    name: "tenant";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Tenant";
+            tableName: "tenant";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -560,7 +560,7 @@ export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         cognitoId: import("drizzle-orm/pg-core").PgColumn<{
             name: "cognitoId";
-            tableName: "Tenant";
+            tableName: "tenant";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -579,7 +579,7 @@ export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         name: import("drizzle-orm/pg-core").PgColumn<{
             name: "name";
-            tableName: "Tenant";
+            tableName: "tenant";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -598,7 +598,7 @@ export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         email: import("drizzle-orm/pg-core").PgColumn<{
             name: "email";
-            tableName: "Tenant";
+            tableName: "tenant";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -617,7 +617,7 @@ export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }>;
         phoneNumber: import("drizzle-orm/pg-core").PgColumn<{
             name: "phoneNumber";
-            tableName: "Tenant";
+            tableName: "tenant";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -638,12 +638,12 @@ export declare const tenant: import("drizzle-orm/pg-core").PgTableWithColumns<{
     dialect: "pg";
 }>;
 export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Location";
+    name: "location";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Location";
+            tableName: "location";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -660,7 +660,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }, {}, {}>;
         address: import("drizzle-orm/pg-core").PgColumn<{
             name: "address";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -679,7 +679,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         city: import("drizzle-orm/pg-core").PgColumn<{
             name: "city";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -698,7 +698,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         state: import("drizzle-orm/pg-core").PgColumn<{
             name: "state";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -717,7 +717,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         country: import("drizzle-orm/pg-core").PgColumn<{
             name: "country";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -736,7 +736,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         postalCode: import("drizzle-orm/pg-core").PgColumn<{
             name: "postalCode";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -755,7 +755,7 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
         }>;
         coordinates: import("drizzle-orm/pg-core").PgColumn<{
             name: "coordinates";
-            tableName: "Location";
+            tableName: "location";
             dataType: "string";
             columnType: "PgText";
             data: string;
@@ -774,12 +774,12 @@ export declare const location: import("drizzle-orm/pg-core").PgTableWithColumns<
     dialect: "pg";
 }>;
 export declare const application: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Application";
+    name: "application";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Application";
+            tableName: "application";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -796,7 +796,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }, {}, {}>;
         applicationDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "applicationDate";
-            tableName: "Application";
+            tableName: "application";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -813,7 +813,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }, {}, {}>;
         status: import("drizzle-orm/pg-core").PgColumn<{
             name: "status";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgEnumColumn";
             data: "Pending" | "Denied" | "Approved";
@@ -830,7 +830,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }, {}, {}>;
         propertyId: import("drizzle-orm/pg-core").PgColumn<{
             name: "propertyId";
-            tableName: "Application";
+            tableName: "application";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -847,7 +847,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }, {}, {}>;
         tenantCognitoId: import("drizzle-orm/pg-core").PgColumn<{
             name: "tenantCognitoId";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -866,7 +866,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }>;
         name: import("drizzle-orm/pg-core").PgColumn<{
             name: "name";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -885,7 +885,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }>;
         email: import("drizzle-orm/pg-core").PgColumn<{
             name: "email";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -904,7 +904,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }>;
         phoneNumber: import("drizzle-orm/pg-core").PgColumn<{
             name: "phoneNumber";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -923,7 +923,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }>;
         message: import("drizzle-orm/pg-core").PgColumn<{
             name: "message";
-            tableName: "Application";
+            tableName: "application";
             dataType: "string";
             columnType: "PgText";
             data: string;
@@ -940,7 +940,7 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
         }, {}, {}>;
         leaseId: import("drizzle-orm/pg-core").PgColumn<{
             name: "leaseId";
-            tableName: "Application";
+            tableName: "application";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -959,12 +959,12 @@ export declare const application: import("drizzle-orm/pg-core").PgTableWithColum
     dialect: "pg";
 }>;
 export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Lease";
+    name: "lease";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -981,7 +981,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         startDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "startDate";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -998,7 +998,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         endDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "endDate";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -1015,7 +1015,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         rent: import("drizzle-orm/pg-core").PgColumn<{
             name: "rent";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -1032,7 +1032,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         deposit: import("drizzle-orm/pg-core").PgColumn<{
             name: "deposit";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -1049,7 +1049,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         propertyId: import("drizzle-orm/pg-core").PgColumn<{
             name: "propertyId";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -1066,7 +1066,7 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         tenantCognitoId: import("drizzle-orm/pg-core").PgColumn<{
             name: "tenantCognitoId";
-            tableName: "Lease";
+            tableName: "lease";
             dataType: "string";
             columnType: "PgVarchar";
             data: string;
@@ -1087,12 +1087,12 @@ export declare const lease: import("drizzle-orm/pg-core").PgTableWithColumns<{
     dialect: "pg";
 }>;
 export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "Payment";
+    name: "payment";
     schema: undefined;
     columns: {
         id: import("drizzle-orm/pg-core").PgColumn<{
             name: "id";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "number";
             columnType: "PgSerial";
             data: number;
@@ -1109,7 +1109,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         amountDue: import("drizzle-orm/pg-core").PgColumn<{
             name: "amountDue";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -1126,7 +1126,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         amountPaid: import("drizzle-orm/pg-core").PgColumn<{
             name: "amountPaid";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "number";
             columnType: "PgReal";
             data: number;
@@ -1143,7 +1143,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         dueDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "dueDate";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -1160,7 +1160,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         paymentDate: import("drizzle-orm/pg-core").PgColumn<{
             name: "paymentDate";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "date";
             columnType: "PgTimestamp";
             data: Date;
@@ -1177,7 +1177,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         paymentStatus: import("drizzle-orm/pg-core").PgColumn<{
             name: "paymentStatus";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "string";
             columnType: "PgEnumColumn";
             data: "Pending" | "Paid" | "PartiallyPaid" | "Overdue";
@@ -1194,7 +1194,7 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
         }, {}, {}>;
         leaseId: import("drizzle-orm/pg-core").PgColumn<{
             name: "leaseId";
-            tableName: "Payment";
+            tableName: "payment";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -1213,12 +1213,12 @@ export declare const payment: import("drizzle-orm/pg-core").PgTableWithColumns<{
     dialect: "pg";
 }>;
 export declare const tenantFavorites: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "TenantFavorites";
+    name: "tenant_favorites";
     schema: undefined;
     columns: {
         tenantId: import("drizzle-orm/pg-core").PgColumn<{
             name: "tenantId";
-            tableName: "TenantFavorites";
+            tableName: "tenant_favorites";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -1235,7 +1235,7 @@ export declare const tenantFavorites: import("drizzle-orm/pg-core").PgTableWithC
         }, {}, {}>;
         propertyId: import("drizzle-orm/pg-core").PgColumn<{
             name: "propertyId";
-            tableName: "TenantFavorites";
+            tableName: "tenant_favorites";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -1254,12 +1254,12 @@ export declare const tenantFavorites: import("drizzle-orm/pg-core").PgTableWithC
     dialect: "pg";
 }>;
 export declare const tenantProperties: import("drizzle-orm/pg-core").PgTableWithColumns<{
-    name: "TenantProperties";
+    name: "tenant_properties";
     schema: undefined;
     columns: {
         tenantId: import("drizzle-orm/pg-core").PgColumn<{
             name: "tenantId";
-            tableName: "TenantProperties";
+            tableName: "tenant_properties";
             dataType: "number";
             columnType: "PgInteger";
             data: number;
@@ -1276,7 +1276,7 @@ export declare const tenantProperties: import("drizzle-orm/pg-core").PgTableWith
         }, {}, {}>;
         propertyId: import("drizzle-orm/pg-core").PgColumn<{
             name: "propertyId";
-            tableName: "TenantProperties";
+            tableName: "tenant_properties";
             dataType: "number";
             columnType: "PgInteger";
             data: number;

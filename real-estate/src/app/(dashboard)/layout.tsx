@@ -1,32 +1,62 @@
-"use client"
+"use client";
 
-import Navbar from '@/components/Navbar'
-import { SidebarProvider } from '@/components/ui/sidebar'
-import { NAVBAR_HEIGHT } from '@/lib/constants'
-import  Sidebar from "@/components/AppSidebar"
+import Navbar from "@/components/Navbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Sidebar from "@/components/AppSidebar";
+import { NAVBAR_HEIGHT } from "@/lib/constants";
+import React, { useEffect, useState } from "react";
+import { useGetAuthUserQuery } from "@/state/api";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
-import React from 'react'
-import { useGetAuthUserQuery } from '@/state/api'
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const { data: authUser, isLoading: authLoading } = useGetAuthUserQuery();
+   const router = useRouter();
+   const pathname = usePathname();
+   const [isLoading, setIsLoading] = useState(false)
 
-const DashboardLayout = ({children}:{children:React.ReactNode}) => {
 
-    const {data:authUser}=useGetAuthUserQuery()
+
+  useEffect(() => {
+    if (authUser) {
+      const userRole = authUser.userRole?.toLowerCase();
+      if (
+        (userRole === "manager" && pathname.startsWith("/tenants")) ||
+        (userRole === "tenant" && pathname.startsWith("/managers"))
+      ) {
+        router.push(
+          userRole === "manager"
+            ? "/managers/properties"
+            : "/tenants/favorites",
+          { scroll: false }
+        );
+      } else {
+        setIsLoading(false);
+      }
+    }
+  }, [authUser, router, pathname]);
+
+  if (authLoading || isLoading) return <>Loading...</>;
+  if (!authUser?.userRole) return null;
+   
+
+  
 
   return (
     <SidebarProvider>
-    <div className='min-h-full w-full bg-primary-100'>
-        <Navbar/>
-        <div style={{padding:`${NAVBAR_HEIGHT}px`}}>
-            <main className='flex'>
-                <Sidebar userType={authUser?.userRole.toLowerCase()}/>
-                <div className='flex-grow transition-all duration-300'>
-                  {children}
-                </div>
-            </main>
+      <div className="min-h-screen w-full bg-primary-100">
+        <Navbar />
+        <div style={{ marginTop: `${NAVBAR_HEIGHT}px` }}>
+          <main className="flex">
+            <Sidebar userType={authUser.userRole.toLowerCase()} />
+            <div className="flex-grow transition-all duration-300">
+              {children}
+            </div>
+          </main>
         </div>
-    </div>
+      </div>
     </SidebarProvider>
-  )
-}
+  );
+};
 
-export default DashboardLayout
+export default DashboardLayout;

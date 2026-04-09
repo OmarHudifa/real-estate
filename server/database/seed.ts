@@ -1,12 +1,11 @@
-// server/seed.ts
-
+// server/database/seed.ts
 import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { sql } from 'drizzle-orm';
-import * as schema from './schema'; // <-- update to your actual schema path
+import * as schema from './schema';
 
 config({ path: '.env' });
 
@@ -17,15 +16,11 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function toPascalCase(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function toCamelCase(str: string): string {
+function toCamelCase(str: string) {
   return str.charAt(0).toLowerCase() + str.slice(1);
 }
 
-// ✅ Utility to convert ISO date strings to real Date objects recursively
+// Convert ISO strings to Date objects
 function reviveDates(obj: any) {
   if (Array.isArray(obj)) {
     obj.forEach(reviveDates);
@@ -41,113 +36,110 @@ function reviveDates(obj: any) {
   }
 }
 
-async function insertLocationData(locations: any[]) {
-  for (const location of locations) {
-    const { id, country, city, state, address, postalCode, coordinates } = location;
-    try {
-      await db.execute(
-        sql`INSERT INTO "Location" ("id", "country", "city", "state", "address", "postalCode", "coordinates")
-            VALUES (${id}, ${country}, ${city}, ${state}, ${address}, ${postalCode}, ST_GeomFromText(${coordinates}, 4326))`
-      );
-      console.log(`Inserted location for ${city}`);
-    } catch (error) {
-      console.error(`Error inserting location for ${city}:`, error);
-    }
-  }
-}
+// Reset sequences for serial IDs
+async function resetSequence(tableName: string) {
+  // Only reset sequence if the table has an 'id' column
+  const skipTables = ['tenantProperties', 'tenantFavorites']; // junction tables
+  if (skipTables.includes(tableName)) return;
 
-async function resetSequence(modelName: string) {
-  const quotedModelName = `"${toPascalCase(modelName)}"`;
-
-  const result = await db.execute(
-    sql.raw(`SELECT MAX(id) as max_id FROM ${quotedModelName}`)
-  );
-
+  const quotedName = `"${tableName}"`;
+  const result = await db.execute(sql.raw(`SELECT MAX(id) as max_id FROM ${quotedName}`));
   const maxId = (result.rows?.[0]?.max_id ?? 0) as number;
   const nextId = maxId + 1;
 
   await db.execute(
-    sql.raw(`
-      SELECT setval(pg_get_serial_sequence('${quotedModelName}', 'id'), ${nextId}, false)
-    `)
+    sql.raw(`SELECT setval(pg_get_serial_sequence('${quotedName}', 'id'), ${nextId}, false)`)
   );
 
-  console.log(`Reset sequence for ${modelName} to ${nextId}`);
+  console.log(`Reset sequence for ${tableName} to ${nextId}`);
 }
 
-async function deleteAllData(orderedFileNames: string[]) {
-  const modelNames = orderedFileNames.map((fileName) => {
-    return toPascalCase(path.basename(fileName, path.extname(fileName)));
-  });
 
-  for (const modelName of modelNames.reverse()) {
-    const camelName = toCamelCase(modelName);
-    const table = (schema as any)[camelName];
-    if (!table) {
-      console.error(`Table ${camelName} not found in schema`);
+// Delete all table data
+async function clearTables(tableNames: string[]) {
+  for (const table of tableNames) {
+    const tbl = (schema as any)[table];
+    if (!tbl) {
+      console.warn(`Table ${table} not found in schema`);
       continue;
     }
 
     try {
-      await db.delete(table);
-      console.log(`Cleared data from ${modelName}`);
-    } catch (error) {
-      console.error(`Error clearing data from ${modelName}:`, error);
+      await db.delete(tbl);
+      console.log(`Cleared data from ${table}`);
+    } catch (err) {
+      console.error(`Error clearing data from ${table}:`, err);
     }
   }
+}
+
+// Load JSON from file
+function loadJson(filePath: string) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
 async function main() {
-  const dataDirectory = path.join(__dirname, 'seedData');
+  const dataDir = path.join(__dirname, 'seedData');
 
-  const orderedFileNames = [
-    'location.json',
-    'manager.json',
-    'property.json',
-    'tenant.json',
-    'lease.json',
-    'application.json',
-    'payment.json',
+  // Tables in order (junction tables last)
+  const tables = [
+    'location',
+    'manager',
+    'property',
+    'tenant',
+    'lease',
+    'application',
+    'payment',
+    'tenantProperties',
+    'tenantFavorites',
   ];
 
-  // Delete all existing data
-  await deleteAllData(orderedFileNames);
+  await clearTables([...tables].reverse());
 
-  for (const fileName of orderedFileNames) {
-    const filePath = path.join(dataDirectory, fileName);
-    const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  // Seed each main table
+  for (const table of tables) {
+    const fileName = table.replace(/([A-Z])/g, '_$1').toLowerCase() + '.json'; // e.g., tenantProperties -> tenant_properties.json
+    const filePath = path.join(dataDir, fileName);
+    if (!fs.existsSync(filePath)) {
+      console.warn(`Seed file not found for table ${table}: ${filePath}`);
+      continue;
+    }
 
-    // ✅ Convert all ISO strings to real Date objects
-    reviveDates(jsonData);
+    let data = loadJson(filePath);
+    reviveDates(data);
 
-    const modelName = toPascalCase(path.basename(fileName, path.extname(fileName)));
-    const modelNameCamel = toCamelCase(modelName);
-
-    if (modelName === 'Location') {
-      await insertLocationData(jsonData);
-    } else {
-      const table = (schema as any)[modelNameCamel];
-      if (!table) {
-        console.error(`Table ${modelNameCamel} not found in schema`);
-        continue;
+    // Special handling for location coordinates (PostGIS)
+    if (table === 'location') {
+      for (const loc of data) {
+        try {
+          await db.execute(
+            sql`INSERT INTO "location" ("id", "country", "city", "state", "address", "postalCode", "coordinates")
+                VALUES (${loc.id}, ${loc.country}, ${loc.city}, ${loc.state}, ${loc.address}, ${loc.postalCode}, ${loc.coordinates})`
+          );
+        } catch (err) {
+          console.error(`Error inserting location ${loc.city}:`, err);
+        }
       }
-
+    } else {
+      const tbl = (schema as any)[toCamelCase(table)];
+      if (!tbl) continue;
       try {
-        await db.insert(table).values(jsonData);
-        console.log(`Seeded ${modelName} with data from ${fileName}`);
-      } catch (error) {
-        console.error(`Error seeding data for ${modelName}:`, error);
+        await db.insert(tbl).values(data);
+        console.log(`Seeded ${table}`);
+      } catch (err) {
+        console.error(`Error seeding ${table}:`, err);
       }
     }
 
-    await resetSequence(modelName);
-    await sleep(1000);
+    await resetSequence(table);
+    await sleep(200);
   }
 
   await pool.end();
+  console.log('✅ Database seeding complete');
 }
 
-main().catch((e) => {
-  console.error('Seed failed:', e);
+main().catch((err) => {
+  console.error('Seed failed:', err);
   process.exit(1);
 });

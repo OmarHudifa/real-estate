@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "cognitoId": "010be580-60a1-70ae-780e-18a6fd94ad32",
+    "cognitoId": "us-east-2:010be580-60a1-70ae-780e-18a6fd94ad32",
     "name": "John Smith",
     "email": "john.smith@example.com",
     "phoneNumber": "+1 (555) 123-4567"

@@ -19,9 +19,13 @@ app.use(express.json())
 app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({policy:"cross-origin"}))
 app.use(morgan("common"))
-app.use(bodyParser.json)
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
-app.use(cors())
+//app.use(cors())
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
 
 /*ROUTES*/
 app.get('/',(req:Request,res:Response, _next: NextFunction)=>{
@@ -30,8 +34,13 @@ app.get('/',(req:Request,res:Response, _next: NextFunction)=>{
 app.use("/tenants",authMiddleware(["tenant"]),tenantRoutes)
 app.use("/managers",authMiddleware(["manager"]),managerRoutes)
 
+
+app.get("/managers/:cognitoId", (req:Request, res:Response) => {
+  res.json({ test: "ok", cognitoId: req.params.cognitoId });
+});
+
 /*SERVER*/
-const port=process.env.PORT || 3002
+const port=process.env.PORT || 3001
 app.listen(port,()=>{
     console.log(`server running on port:${port}`)
 })

@@ -31,7 +31,7 @@ import {
 // Enums
 type Enum<T extends readonly string[]> = T[number];
 
-export const highlightEnum = pgEnum('Highlight', [
+export const highlightEnum = pgEnum('highlight', [
   'HighSpeedInternetAccess',
   'WasherDryer',
   'AirConditioning',
@@ -49,7 +49,7 @@ export const highlightEnum = pgEnum('Highlight', [
   'QuietNeighborhood'
 ]);
 
-export const amenityEnum = pgEnum('Amenity', [
+export const amenityEnum = pgEnum('amenity', [
   'WasherDryer',
   'AirConditioning',
   'Dishwasher',
@@ -65,7 +65,7 @@ export const amenityEnum = pgEnum('Amenity', [
   'WiFi'
 ]);
 
-export const propertyTypeEnum = pgEnum('PropertyType', [
+export const propertyTypeEnum = pgEnum('property_type', [
   'Rooms',
   'Tinyhouse',
   'Apartment',
@@ -74,13 +74,13 @@ export const propertyTypeEnum = pgEnum('PropertyType', [
   'Cottage'
 ]);
 
-export const applicationStatusEnum = pgEnum('ApplicationStatus', [
+export const applicationStatusEnum = pgEnum('application_status', [
   'Pending',
   'Denied',
   'Approved'
 ]);
 
-export const paymentStatusEnum = pgEnum('PaymentStatus', [
+export const paymentStatusEnum = pgEnum('payment_status', [
   'Pending',
   'Paid',
   'PartiallyPaid',
@@ -88,7 +88,7 @@ export const paymentStatusEnum = pgEnum('PaymentStatus', [
 ]);
 
 // Tables
-export const property = pgTable('Property', {
+export const property = pgTable('property', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   description: text('description').notNull(),
@@ -111,7 +111,7 @@ export const property = pgTable('Property', {
   managerCognitoId: varchar('managerCognitoId', { length: 255 }).notNull()
 });
 
-export const manager = pgTable('Manager', {
+export const manager = pgTable('manager', {
   id: serial('id').primaryKey(),
   cognitoId: varchar('cognitoId', { length: 255 }).notNull().unique(),
   name: varchar('name', { length: 255 }).notNull(),
@@ -119,7 +119,7 @@ export const manager = pgTable('Manager', {
   phoneNumber: varchar('phoneNumber', { length: 255 }).notNull()
 });
 
-export const tenant = pgTable('Tenant', {
+export const tenant = pgTable('tenant', {
   id: serial('id').primaryKey(),
   cognitoId: varchar('cognitoId', { length: 255 }).notNull().unique(),
   name: varchar('name', { length: 255 }).notNull(),
@@ -127,7 +127,7 @@ export const tenant = pgTable('Tenant', {
   phoneNumber: varchar('phoneNumber', { length: 255 }).notNull()
 });
 
-export const location = pgTable('Location', {
+export const location = pgTable('location', {
   id: serial('id').primaryKey(),
   address: varchar('address', { length: 255 }).notNull(),
   city: varchar('city', { length: 100 }).notNull(),
@@ -137,7 +137,7 @@ export const location = pgTable('Location', {
   coordinates: text('coordinates').notNull() // PostGIS support placeholder
 });
 
-export const application = pgTable('Application', {
+export const application = pgTable('application', {
   id: serial('id').primaryKey(),
   applicationDate: timestamp('applicationDate', { withTimezone: true }).notNull(),
   status: applicationStatusEnum('status').notNull(),
@@ -150,7 +150,7 @@ export const application = pgTable('Application', {
   leaseId: integer('leaseId').unique()
 });
 
-export const lease = pgTable('Lease', {
+export const lease = pgTable('lease', {
   id: serial('id').primaryKey(),
   startDate: timestamp('startDate', { withTimezone: true }).notNull(),
   endDate: timestamp('endDate', { withTimezone: true }).notNull(),
@@ -160,7 +160,7 @@ export const lease = pgTable('Lease', {
   tenantCognitoId: varchar('tenantCognitoId', { length: 255 }).notNull()
 });
 
-export const payment = pgTable('Payment', {
+export const payment = pgTable('payment', {
   id: serial('id').primaryKey(),
   amountDue: real('amountDue').notNull(),
   amountPaid: real('amountPaid').notNull(),
@@ -171,14 +171,14 @@ export const payment = pgTable('Payment', {
 });
 
 // Junction Tables (many-to-many)
-export const tenantFavorites = pgTable('TenantFavorites', {
+export const tenantFavorites = pgTable('tenant_favorites', {
   tenantId: integer('tenantId').notNull(),
   propertyId: integer('propertyId').notNull(),
 }, (table) => ({
   pk: primaryKey({ columns: [table.tenantId, table.propertyId] })
 }));
 
-export const tenantProperties = pgTable('TenantProperties', {
+export const tenantProperties = pgTable('tenant_properties', {
   tenantId: integer('tenantId').notNull(),
   propertyId: integer('propertyId').notNull(),
 }, (table) => ({
