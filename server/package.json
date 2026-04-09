@@ -7,7 +7,9 @@
     "build": "rimraf dist && npx tsc",
     "start": "npm run build && node dist/index.js",
     "dev": "npm run build && concurrently \"npx tsc -w\" \"nodemon --exec ts-node src/index.ts\"",
-    "seed": "npx tsx database/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "prisma:generate": "prisma generate",
+    "postprisma:generate": "shx cp -r node_modules/.prisma/client/index.d.ts .. /client/src/types/prismaTypes.d.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.859.0",
     "@aws-sdk/lib-storage": "^3.859.0",
-    "@prisma/client": "^6.13.0",
+    "@prisma/client": "^6.16.2",
     "@terraformer/wkt": "^2.2.1",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",

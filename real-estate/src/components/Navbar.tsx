@@ -34,6 +34,7 @@ const Navbar = () => {
   console.log("name: ",authUser?.userInfo?.name)
   console.log("auth: ",authUser)
 
+  console.log("dashboard? :",isDashboardPage)
   return (
     <div
       className="fixed top-0 left-0 w-full z-50 shadow-xl"
